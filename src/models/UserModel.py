@@ -18,16 +18,6 @@ class UserModel(db.Model):
     password: Mapped[str] = mapped_column(String(500))
     roles: Mapped[str] = mapped_column(String(32))
 
-    '''id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(255))
-    username = Column(String(32))
-    email = Column(String(255))
-    num_employee = Column(String(32))
-    number_phone = Column(String(16))
-    risk_rating = Column(Integer)
-    password = Column(String(500))
-    roles = Column(String(32))'''
-
     def __init__(self, name, username, email, num_employee, number_phone, risk_rating, password, roles):
         self.name = name
         self.username = username

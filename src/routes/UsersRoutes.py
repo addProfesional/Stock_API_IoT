@@ -1,7 +1,6 @@
 from flask import Blueprint, request, jsonify
 from ..models.UserModel import UserModel
 from ..database.Database import db
-from src.data_example.users import usuarios
 
 router = Blueprint('usuarios_blueprint', __name__)
 
@@ -23,7 +22,6 @@ def crearUsuario():
     print(nuevo_usuario)
 
     # Agregar la nueva instancia a la base de datos y hacer commit
-    # db = Database.obtener_conexion()
     db.session.add(nuevo_usuario)
     db.session.commit()
 

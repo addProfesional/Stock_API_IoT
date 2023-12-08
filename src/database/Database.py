@@ -2,17 +2,27 @@ import mysql.connector as mariadb
 from mysql.connector import Error
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-
+from dotenv import load_dotenv
+import os
 
 class Base(DeclarativeBase):
     pass
 
 
 db = SQLAlchemy(model_class=Base)
-
+load_dotenv('.env.dev')
 
 class Database:
     _conexion = None
+    @staticmethod
+    def obtener_uri():
+        user = os.environ.get('USER_DB')
+        password = os.environ.get('PASS_DB')
+        host = os.environ.get('HOST_DB')
+        db_name = os.environ.get('DB_NAME')
+
+        uri = 'mysql://'+user+':'+password+'@'+host+'/'+db_name
+        return uri
 
     @classmethod
     def obtener_conexion(cls):
