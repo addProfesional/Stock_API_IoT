@@ -10,7 +10,7 @@ def obtenerUsuarios():
     usuarios = UserModel.query.all()
 
     # Convertir a un formato JSON o cualquier otro formato necesario
-    resultado = [{'id': usuario.user_id, 'nombre': usuario.nombre} for usuario in usuarios]
+    resultado = [{'id': usuario.user_id, 'nombre': usuario.name} for usuario in usuarios]
 
     return jsonify(resultado)
 @router.route('/crear',  methods=['POST'])

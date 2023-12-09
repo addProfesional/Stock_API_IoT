@@ -1,4 +1,4 @@
-from sqlalchemy import Integer, String
+from sqlalchemy import Integer, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 from ..database.Database import db
 
@@ -14,8 +14,10 @@ class UserModel(db.Model):
     risk_rating: Mapped[int] = mapped_column(Integer)
     password: Mapped[str] = mapped_column(String(500))
     roles: Mapped[str] = mapped_column(String(32))
+    created_at: Mapped[int] = mapped_column(Integer)
+    deleted: Mapped[bool] = mapped_column(Boolean)
 
-    def __init__(self, name, username, email, num_employee, number_phone, risk_rating, password, roles):
+    def __init__(self, name, username, email, num_employee, number_phone, risk_rating, password, roles, deleted, created_at):
         self.name = name
         self.username = username
         self.email = email
@@ -24,6 +26,8 @@ class UserModel(db.Model):
         self.risk_rating = risk_rating
         self.password = password
         self.roles = roles
+        self.deleted = deleted
+        self.created_at = created_at
 
     @classmethod
     def crear_desde_json(cls, datos_json):
