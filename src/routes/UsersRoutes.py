@@ -2,6 +2,8 @@ from flask import Blueprint, request, jsonify, abort
 from ..models.UserModel import UserModel
 from ..database.Database import db
 from ..utils.SecurityUtils import Security
+from ..services.ConfigService import AppConfig
+
 
 router = Blueprint('usuarios_blueprint', __name__)
 
