@@ -1,8 +1,14 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, abort
 from ..models.UserModel import UserModel
 from ..database.Database import db
+from ..utils.SecurityUtils import Security
 
 router = Blueprint('usuarios_blueprint', __name__)
+
+@router.before_request
+def verificar_token():
+    tiene_acceso = Security.verificar_token(request.headers)
+    if not tiene_acceso: return jsonify({'error': 'No está autorizado para realizar la petición'}), 401
 
 @router.route('/', methods=['GET'])
 def obtenerUsuarios():
@@ -29,7 +35,28 @@ def crearUsuario():
 
 @router.route('/obtenerUsuario/<string:field>/<string:value>',  methods=['GET'])
 def obtenerUsuario(field, value):
-    return jsonify({'msg': 'Obteniendo un usuario'})
+
+    # Validar que el campo sea uno de los campos válidos del modelo Usuario
+    campos_validos = [columna.name for columna in UserModel.__table__.columns]
+    if field not in campos_validos:
+        return jsonify({'error': 'Campo no válido'}), 400
+
+    # Construir la consulta dinámica
+    filtro = {field: value}
+    print(filtro)
+    usuario = UserModel.query.filter_by(**filtro).first()
+    print(usuario)
+
+    if usuario:
+        resultado = {
+            'id': usuario.user_id,
+            'name' : usuario.name,
+            'email' : usuario.email
+        }
+        return jsonify(resultado)
+    else:
+        return jsonify({'error': 'Usuario no encontrado'}), 404
+
 
 @router.route('/actualizarUsuario/<string:field>/<string:value>',  methods=['POST'])
 def actualizarUsuario(field, value):

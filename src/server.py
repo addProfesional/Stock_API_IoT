@@ -1,5 +1,5 @@
 #Routes
-from .routes import DevicesRoutes, UsersRoutes, MerchantRoutes, InventoryRoutes, HistoryRoutes
+from .routes import DevicesRoutes, UsersRoutes, MerchantRoutes, InventoryRoutes, HistoryRoutes, AuthRoutes
 from .database.Database import Database, db
 from flask import Flask
 from flask_bcrypt import Bcrypt
@@ -25,6 +25,7 @@ def index():
 def iniciar():
 
     #Blueprints
+    servidor.register_blueprint(AuthRoutes.router, url_prefix='/auth')
     servidor.register_blueprint(DevicesRoutes.router, url_prefix='/dispositivos')
     servidor.register_blueprint(UsersRoutes.router, url_prefix='/usuarios')
     servidor.register_blueprint(MerchantRoutes.router, url_prefix='/mercancias')
