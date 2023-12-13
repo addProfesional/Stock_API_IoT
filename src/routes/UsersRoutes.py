@@ -1,9 +1,7 @@
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify
 from ..models.UserModel import UserModel
 from ..database.Database import db
 from ..utils.SecurityUtils import Security
-from ..services.ConfigService import AppConfig
-
 
 router = Blueprint('usuarios_blueprint', __name__)
 
@@ -20,7 +18,7 @@ def obtenerUsuarios():
     # Convertir a un formato JSON o cualquier otro formato necesario
     resultado = [{'id': usuario.user_id, 'nombre': usuario.name} for usuario in usuarios]
 
-    return jsonify(resultado)
+    return jsonify(resultado), 200
 @router.route('/crear',  methods=['POST'])
 def crearUsuario():
     datos_json = request.json
@@ -33,7 +31,7 @@ def crearUsuario():
     db.session.add(nuevo_usuario)
     db.session.commit()
 
-    return jsonify({'msg': {'id': nuevo_usuario.user_id, 'nombre': nuevo_usuario.name}})
+    return jsonify({'msg': {'id': nuevo_usuario.user_id, 'nombre': nuevo_usuario.name}}), 200
 
 @router.route('/obtenerUsuario/<string:field>/<string:value>',  methods=['GET'])
 def obtenerUsuario(field, value):
@@ -55,7 +53,7 @@ def obtenerUsuario(field, value):
             'name' : usuario.name,
             'email' : usuario.email
         }
-        return jsonify(resultado)
+        return jsonify(resultado), 200
     else:
         return jsonify({'error': 'Usuario no encontrado'}), 404
 
@@ -76,6 +74,7 @@ def actualizarUsuario(field, value):
     usuario.name = datos_json['name']
     usuario.username = datos_json['username']
     usuario.email = datos_json['email']
+    #agregar los campos correspondientes
 
     db.session.commit()
 
@@ -97,4 +96,4 @@ def eliminarUsuario(field, value):
     db.session.delete(usuario)
     db.session.commit()
 
-    return jsonify({'msg': 'Usuario ' +str(usuario.user_id)+ ' eliminado'})
+    return jsonify({'msg': 'Usuario ' +str(usuario.user_id)+ ' eliminado'}), 200
