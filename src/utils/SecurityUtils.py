@@ -14,7 +14,7 @@ class Security:
     def generar_token(cls, usuario_autenticado):
         payload = {
             'iat': datetime.datetime.now(tz=cls.tz),
-            'exp': datetime.datetime.now(tz=cls.tz) + datetime.timedelta(minutes=10),
+            'exp': datetime.datetime.now(tz=cls.tz) + datetime.timedelta(minutes=int(os.environ.get('TIME_SESSION'))),
             'username' : usuario_autenticado.username
         }
 

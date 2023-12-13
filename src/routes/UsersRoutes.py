@@ -60,8 +60,39 @@ def obtenerUsuario(field, value):
 
 @router.route('/actualizarUsuario/<string:field>/<string:value>',  methods=['POST'])
 def actualizarUsuario(field, value):
-    return jsonify({'msg': 'Actualizando un usuario'})
+    datos_json = request.json
+    campos_validos = [columna.name for columna in UserModel.__table__.columns]
+    if field not in campos_validos:
+        return jsonify({'error': 'Campo no válido'}), 400
+
+    # Construir la consulta dinámica
+    filtro = {field: value}
+    print(filtro)
+    usuario = UserModel.query.filter_by(**filtro).first()
+    print(usuario)
+
+    usuario.name = datos_json['name']
+    usuario.username = datos_json['username']
+    usuario.email = datos_json['email']
+
+    db.session.commit()
+
+    return jsonify({'msg': 'Usuario ' +str(usuario.user_id)+ ' actualizado' }), 200
 
 @router.route('/eliminarUsuario/<string:field>/<string:value>',  methods=['DELETE'])
 def eliminarUsuario(field, value):
-    return jsonify({'msg': 'Eliminando un usuario'})
+    # Validar que el campo sea uno de los campos válidos del modelo Usuario
+    campos_validos = [columna.name for columna in UserModel.__table__.columns]
+    if field not in campos_validos:
+        return jsonify({'error': 'Campo no válido'}), 400
+
+    # Construir la consulta dinámica
+    filtro = {field: value}
+    print(filtro)
+    usuario = UserModel.query.filter_by(**filtro).first()
+    print(usuario)
+
+    db.session.delete(usuario)
+    db.session.commit()
+
+    return jsonify({'msg': 'Usuario ' +str(usuario.user_id)+ ' eliminado'})
