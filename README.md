@@ -6,3 +6,33 @@ Iré haciendo cambios conforme pase el tiempo:
 
 Proyecto 'Stock API IoT'
 Tecnología usada: HTTP
+
+Genmerar archivo de dependencias (dentro de ambiente virtual):
+
+pip freeze > dependencias
+
+Instalación y montaje:
+
+1. Clonar proyecto:
+git clone https://github....
+
+1. Crear un entorno virtual nuevo:
+
+Linux/MacOs:
+
+cd Stock_API_IoT/
+
+virtualenv venv
+
+source venv/bin/activate
+
+pip install -r "dependencias.txt"
+
+
+Windows
+
+cd Stock_API_IoT/
+
+py -3 -m venv .venv
+
+.venv\Scripts\activate
