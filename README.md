@@ -16,6 +16,12 @@ Instalación y montaje:
 1. Clonar proyecto:
 git clone https://github....
 
+2. Instalar:
+
+sudo apt-get install pkg-config
+
+sudo apt-get install libmysqlclient-dev
+
 1. Crear un entorno virtual nuevo:
 
 Linux/MacOs:
@@ -27,6 +33,10 @@ virtualenv venv
 source venv/bin/activate
 
 pip install -r "dependencias.txt"
+
+Listar paquetes instalados:
+
+pip list
 
 
 Windows
