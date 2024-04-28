@@ -4,6 +4,7 @@
 # Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 from src.server  import iniciar, ssl_context
 from src.database.Database import db
+import os
 
 app = iniciar()
 
@@ -12,7 +13,15 @@ with app.app_context():
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
+    useSSL = os.environ.get('USE_SSL_TLS')
+    if useSSL == True:
+        print('Servidor usando SSL...')
+        app.run(debug=True, ssl_context=ssl_context)
+    else:
+        print('Servidor no usa SSL...')
+        app.run(debug=True)
+
     #app.run()
-    app.run(debug=True, ssl_context=ssl_context)
+    #app.run(debug=True, ssl_context=ssl_context)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
