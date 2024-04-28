@@ -16,10 +16,10 @@ if __name__ == '__main__':
     useSSL = os.environ.get('USE_SSL_TLS')
     if useSSL == True:
         print('Servidor usando SSL...')
-        app.run(debug=True, ssl_context=ssl_context)
+        app.run(debug=True, ssl_context=ssl_context,  host='0.0.0.0')
     else:
         print('Servidor no usa SSL...')
-        app.run(debug=True)
+        app.run(debug=True, host='0.0.0.0')
 
     #app.run()
     #app.run(debug=True, ssl_context=ssl_context)
