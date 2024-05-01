@@ -21,6 +21,16 @@ class Security:
         return jwt.encode(payload, cls.key_secret, algorithm="HS256")
 
     @classmethod
+    def generar_token_dispositivo(cls, dispositivo_autenticado):
+        payload = {
+            'iat': datetime.datetime.now(tz=cls.tz),
+            'exp': datetime.datetime.now(tz=cls.tz) + datetime.timedelta(minutes=int(os.environ.get('TIME_SESSION'))),
+            'name': dispositivo_autenticado.name
+        }
+
+        return jwt.encode(payload, cls.key_secret, algorithm="HS256")
+
+    @classmethod
     def verificar_token(cls, headers):
         if 'Authorization' in headers.keys():
             authorization = headers['Authorization']

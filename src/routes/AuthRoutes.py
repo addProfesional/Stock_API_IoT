@@ -11,3 +11,14 @@ def login():
         return jsonify({'token': token})
     else:
         return jsonify({'error': 'Error de inicio de sesión'})
+
+
+@router.route('/device',  methods=['POST'])
+def loginDevice():
+    datos_dispositivo = request.json
+    print(datos_dispositivo)
+    token = AuthService.loginDevice(datos_dispositivo)
+    if token != None:
+        return jsonify({'token': token})
+    else:
+        return jsonify({'error': 'Error de inicio de sesión'})
