@@ -73,6 +73,7 @@ def actualizarDispositivo(field, value):
     print(dispositivo)
 
     dispositivo.name = datos_json['name']
+    dispositivo.password = datos_json['password']
     dispositivo.type = datos_json['type']
     # Agregar campos que hagan falta
 
