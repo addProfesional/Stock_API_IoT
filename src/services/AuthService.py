@@ -22,7 +22,7 @@ class AuthService():
     @classmethod
     def loginDevice(cls, device):
         query = {
-            'username': device['name'],
+            'name': device['name'],
             'password': device['password']
         }
 
