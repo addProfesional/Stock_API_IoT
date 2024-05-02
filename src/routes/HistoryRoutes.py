@@ -1,7 +1,11 @@
 from flask import Blueprint, request, jsonify
 from ..models.HistoryModel import HistoryModel
+from ..models.CardsModel import CardsModel
+from ..models.DevicesModel import DevicesModel
 from ..database.Database import db
 from ..utils.SecurityUtils import Security
+
+import time
 
 router = Blueprint('history_blueprint', __name__)
 
@@ -33,6 +37,46 @@ def crearHistorial():
     db.session.commit()
 
     return jsonify({'msg': {'id': nueva_historia.history_id, 'type': nueva_historia.type}})
+
+@router.route('/transaccionar/stock',  methods=['POST'])
+def transaccionarStock():
+    print('Entra a transaccionarStock(): ')
+    datos_json = request.json
+    print(datos_json)
+
+    #Consultar datos del card:
+    queryCard = {'uuid_card': datos_json['id']}
+    card = CardsModel.query.filter_by(**queryCard).first()
+    print(card)
+
+    userId = card.user_id
+    print(userId)
+
+    #Consultar datos del dispositivo
+    queryDevice = {'name': datos_json['device_name']}
+    device = DevicesModel.query.filter_by(**queryDevice).first()
+
+    deviceId = device.device_id
+
+    dataToWrite = {
+        'type' : 'AccessIn',
+        'user_id' : userId,
+        'device_id' : deviceId,
+        'inventory_id': None,
+        'merchant_id' : None,
+        'created_at': int(time.time() * 1000),
+        'deleted' : False
+    }
+
+    # Crear una instancia del modelo a partir de los datos JSON
+    nueva_historia = HistoryModel.crear_desde_json(dataToWrite)
+    print(nueva_historia)
+
+    # Agregar la nueva instancia a la base de datos y hacer commit
+    db.session.add(nueva_historia)
+    db.session.commit()
+
+    return jsonify({'msg': {'id': nueva_historia.history_id, 'type': nueva_historia.type, 'status': True}})
 
 @router.route('/obtenerHistoria/<string:field>/<string:value>',  methods=['GET'])
 def obtenerHistorial(field, value):

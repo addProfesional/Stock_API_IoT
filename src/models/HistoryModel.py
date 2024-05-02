@@ -1,5 +1,6 @@
-from sqlalchemy import Integer, String, Boolean, ForeignKey
+from sqlalchemy import Integer, String, Boolean, ForeignKey, BigInteger
 from sqlalchemy.orm import Mapped, mapped_column
+from typing import Optional
 from ..database.Database import db
 
 class HistoryModel(db.Model):
@@ -7,11 +8,11 @@ class HistoryModel(db.Model):
 
     history_id: Mapped[int] = mapped_column(Integer, primary_key=True)
     type: Mapped[str] = mapped_column(String(20))  # { 'InvIn', 'InvOut', 'AccessIn', 'AccessOut', 'newMerchant'}
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey('usuarios'))
-    device_id: Mapped[int] = mapped_column(Integer, ForeignKey('dispositivos'))
-    inventory_id: Mapped[int] = mapped_column(Integer, ForeignKey('inventarios'))
-    merchant_id: Mapped[int] = mapped_column(Integer, ForeignKey('mercancias'), nullable=True)
-    created_at: Mapped[int] = mapped_column(Integer)
+    user_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('usuarios'), nullable=True)
+    device_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('dispositivos'), nullable=True)
+    inventory_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('inventarios'), nullable=True)
+    merchant_id: Mapped[Optional[int]] = mapped_column(Integer, ForeignKey('mercancias'), nullable=True)
+    created_at: Mapped[int] = mapped_column(BigInteger)
     deleted: Mapped[bool] = mapped_column(Boolean)
 
     def __init__(self, type, user_id, device_id, inventory_id, merchant_id, created_at, deleted):
